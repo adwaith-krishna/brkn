@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRKN - Login & Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .auth-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .brand-logo {
+            width: 120px;
+            height: auto;
+            max-width: 100%;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            opacity: 1;
+        }
+
+        .brand-name {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #fff, #ccc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Tab Navigation */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .auth-tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .auth-tab:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Form Container */
+        .auth-forms {
+            position: relative;
+            min-height: 350px;
+        }
+
+        .auth-form {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .auth-form.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        .form-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .phone-input-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .country-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 16px 12px;
+            color: #fff;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 16px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-input:focus,
+        .country-select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .back-to-site {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-to-site:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Loading State */
+        .loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error/Success Messages */
+        .message {
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .error-message {
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            color: #ff3b30;
+        }
+
+        .success-message {
+            background: rgba(52, 199, 89, 0.1);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            color: #34c759;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Terms and Privacy */
+        .terms-notice {
+            font-size: 12px;
+            opacity: 0.6;
+            text-align: center;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+
+        .terms-notice a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: underline;
+        }
+
+        .terms-notice a:hover {
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .brand-name {
+                font-size: 28px;
+            }
+
+            .phone-input-container {
+                flex-direction: column;
+            }
+
+            .country-select {
+                width: 100%;
+            }
+
+            .brand-logo {
+                width: 100px;
+            }
+
+            .back-to-site {
+                top: 15px;
+                left: 15px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-to-site">
+        ← Back to BRKN
+    </a>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="brand-header">
+                <div class="logo-container">
+                    <img src="../brkn logo.jpeg" alt="BRKN Logo" class="brand-logo">
+                </div>
+                <div class="brand-name">BRKN</div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab">Login</button>
+                <button class="auth-tab" id="registerTab">Register</button>
+            </div>
+
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <form class="auth-form active" id="loginForm">
+                    <div class="form-fields">
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <div class="phone-input-container">
+                                <select class="country-select" id="loginCountryCode">
+                                    <option value="+1">🇺🇸 +1</option>
+                                    <option value="+44">🇬🇧 +44</option>
+                                    <option value="+33">🇫🇷 +33</option>
+                                    <option value="+49">🇩🇪 +49</option>
+                                    <option value="+39">🇮🇹 +39</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+91">🇮🇳 +91</option>
+                                    <option value="+86">🇨🇳 +86</option>
+                                    <option value="+81">🇯🇵 +81</option>
+                                    <option value="+82">🇰🇷 +82</option>
+                                    <option value="+61">🇦🇺 +61</option>
+                                    <option value="+55">🇧🇷 +55</option>
+                                </select>
+                                <input 
+                                    type="tel" 
+                                    class="form-input" 
+                                    id="loginPhone"
+                                    placeholder="Enter your phone number"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <div class="password-container">
+                                <input 
+                                    type="password" 
+                                    class="form-input" 
+                                    id="loginPassword"
+                                    placeholder="Enter your password"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" data-target="loginPassword">
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-button" id="loginBtn">
+                            Login to BRKN
+                        </button>
+
+                        <div class="forgot-password">
+                            <a href="#" class="forgot-link">Forgot password?</a>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form class="auth-form" id="registerForm">
+                    <div class="form-fields">
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <div class="phone-input-container">
+                                <select class="country-select" id="registerCountryCode">
+                                    <option value="+1">🇺🇸 +1</option>
+                                    <option value="+44">🇬🇧 +44</option>
+                                    <option value="+33">🇫🇷 +33</option>
+                                    <option value="+49">🇩🇪 +49</option>
+                                    <option value="+39">🇮🇹 +39</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+91">🇮🇳 +91</option>
+                                    <option value="+86">🇨🇳 +86</option>
+                                    <option value="+81">🇯🇵 +81</option>
+                                    <option value="+82">🇰🇷 +82</option>
+                                    <option value="+61">🇦🇺 +61</option>
+                                    <option value="+55">🇧🇷 +55</option>
+                                </select>
+                                <input 
+                                    type="tel" 
+                                    class="form-input" 
+                                    id="registerPhone"
+                                    placeholder="Enter your phone number"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <div class="password-container">
+                                <input 
+                                    type="password" 
+                                    class="form-input" 
+                                    id="registerPassword"
+                                    placeholder="Create a password"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" data-target="registerPassword">
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <div class="password-container">
+                                <input 
+                                    type="password" 
+                                    class="form-input" 
+                                    id="confirmPassword"
+                                    placeholder="Confirm your password"
+                                    required
+                                >
+                                <button type="button" class="password-toggle" data-target="confirmPassword">
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-button" id="registerBtn">
+                            Create BRKN Account
+                        </button>
+
+                        <div class="terms-notice">
+                            By creating an account, you agree to our 
+                            <a href="#">Terms of Service</a> and 
+                            <a href="#">Privacy Policy</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-footer">
+                <a href="#" class="footer-link">Need help? Contact support</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class AuthSystem {
+            constructor() {
+                this.currentTab = 'login';
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.setupPhoneInputs();
+            }
+
+            bindEvents() {
+                // Tab switching
+                document.getElementById('loginTab').addEventListener('click', () => {
+                    this.switchTab('login');
+                });
+
+                document.getElementById('registerTab').addEventListener('click', () => {
+                    this.switchTab('register');
+                });
+
+                // Form submissions
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                document.getElementById('registerForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleRegister();
+                });
+
+                // Password toggles
+                document.querySelectorAll('.password-toggle').forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        this.togglePassword(toggle);
+                    });
+                });
+
+                // Phone number formatting
+                document.getElementById('loginPhone').addEventListener('input', (e) => {
+                    this.formatPhoneNumber(e.target, 'loginCountryCode');
+                });
+
+                document.getElementById('registerPhone').addEventListener('input', (e) => {
+                    this.formatPhoneNumber(e.target, 'registerCountryCode');
+                });
+
+                // Enter key handling
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (this.currentTab === 'login') {
+                            this.handleLogin();
+                        } else {
+                            this.handleRegister();
+                        }
+                    }
+                });
+            }
+
+            switchTab(tab) {
+                // Update tab buttons
+                document.querySelectorAll('.auth-tab').forEach(tabBtn => {
+                    tabBtn.classList.remove('active');
+                });
+                document.getElementById(tab + 'Tab').classList.add('active');
+
+                // Update forms
+                document.querySelectorAll('.auth-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+                document.getElementById(tab + 'Form').classList.add('active');
+
+                this.currentTab = tab;
+                this.removeMessages();
+            }
+
+            setupPhoneInputs() {
+                const phoneInputs = ['loginPhone', 'registerPhone'];
+                phoneInputs.forEach(inputId => {
+                    const input = document.getElementById(inputId);
+                    input.addEventListener('focus', () => {
+                        if (!input.value) {
+                            setTimeout(() => input.setSelectionRange(0, 0), 10);
+                        }
+                    });
+                });
+            }
+
+            formatPhoneNumber(input, countrySelectId) {
+                let value = input.value.replace(/\D/g, '');
+                const countryCode = document.getElementById(countrySelectId).value;
+                
+                // Basic formatting based on country
+                if (countryCode === '+1') {
+                    // US format: (555) 123-4567
+                    if (value.length >= 6) {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                    } else if (value.length >= 3) {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                    }
+                }
+                
+                input.value = value;
+            }
+
+            togglePassword(button) {
+                const targetId = button.getAttribute('data-target');
+                const passwordInput = document.getElementById(targetId);
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    button.textContent = 'Hide';
+                } else {
+                    passwordInput.type = 'password';
+                    button.textContent = 'Show';
+                }
+            }
+
+            async handleLogin() {
+                const countryCode = document.getElementById('loginCountryCode').value;
+                const phone = document.getElementById('loginPhone').value;
+                const password = document.getElementById('loginPassword').value;
+                const button = document.getElementById('loginBtn');
+
+                // Validation
+                if (!phone.trim()) {
+                    this.showError('Please enter your phone number');
+                    return;
+                }
+
+                if (!password.trim()) {
+                    this.showError('Please enter your password');
+                    return;
+                }
+
+                const fullPhoneNumber = countryCode + phone.replace(/\D/g, '');
+
+                // Show loading state
+                button.classList.add('loading');
+                button.disabled = true;
+
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // In real implementation, call your authentication API here
+                    console.log('Logging in with:', {
+                        phone: fullPhoneNumber,
+                        password: password
+                    });
+                    
+                    // For demo, accept any credentials
+                    this.handleLoginSuccess({
+                        name: 'User',
+                        phone: fullPhoneNumber
+                    });
+                    
+                } catch (error) {
+                    this.showError('Invalid phone number or password. Please try again.');
+                } finally {
+                    button.classList.remove('loading');
+                    button.disabled = false;
+                }
+            }
+
+            async handleRegister() {
+                const countryCode = document.getElementById('registerCountryCode').value;
+                const phone = document.getElementById('registerPhone').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const button = document.getElementById('registerBtn');
+
+                // Validation
+                if (!phone.trim()) {
+                    this.showError('Please enter your phone number');
+                    return;
+                }
+
+                if (!password.trim()) {
+                    this.showError('Please enter a password');
+                    return;
+                }
+
+                if (password.length < 8) {
+                    this.showError('Password must be at least 8 characters long');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    this.showError('Passwords do not match');
+                    return;
+                }
+
+                const fullPhoneNumber = countryCode + phone.replace(/\D/g, '');
+
+                // Show loading state
+                button.classList.add('loading');
+                button.disabled = true;
+
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2500));
+                    
+                    // In real implementation, call your registration API here
+                    console.log('Registering user:', {
+                        phone: fullPhoneNumber,
+                        password
+                    });
+                    
+                    // For demo, simulate successful registration
+                    this.handleRegistrationSuccess({
+                        name: 'User', // Default name since we don't collect it
+                        phone: fullPhoneNumber
+                    });
+                    
+                } catch (error) {
+                    this.showError('Registration failed. Please try again.');
+                } finally {
+                    button.classList.remove('loading');
+                    button.disabled = false;
+                }
+            }
+
+            handleLoginSuccess(userData) {
+                console.log('Login successful!', userData);
+                this.showSuccess('Login successful! Redirecting...');
+                
+                // Store user data (replace with actual token/session management)
+                localStorage.setItem('brkn_user_logged_in', 'true');
+                localStorage.setItem('brkn_user_data', JSON.stringify(userData));
+                
+                setTimeout(() => {
+                    // Redirect to main site or dashboard
+                    window.location.href = '../index.html';
+                }, 1500);
+            }
+
+            handleRegistrationSuccess(userData) {
+                console.log('Registration successful!', userData);
+                this.showSuccess('Account created successfully! Logging you in...');
+                
+                // Auto-login after successful registration
+                setTimeout(() => {
+                    this.handleLoginSuccess(userData);
+                }, 1500);
+            }
+
+            showError(message) {
+                this.removeMessages();
+                
+                const errorEl = document.createElement('div');
+                errorEl.className = 'message error-message';
+                errorEl.textContent = message;
+                
+                const activeForm = document.querySelector('.auth-form.active .form-fields');
+                activeForm.insertBefore(errorEl, activeForm.firstChild);
+                
+                // Remove error after 5 seconds
+                setTimeout(() => {
+                    if (errorEl.parentNode) {
+                        errorEl.remove();
+                    }
+                }, 5000);
+            }
+
+            showSuccess(message) {
+                this.removeMessages();
+                
+                const successEl = document.createElement('div');
+                successEl.className = 'message success-message';
+                successEl.textContent = message;
+                
+                const activeForm = document.querySelector('.auth-form.active .form-fields');
+                activeForm.insertBefore(successEl, activeForm.firstChild);
+            }
+
+            removeMessages() {
+                const existingMessages = document.querySelectorAll('.message');
+                existingMessages.forEach(msg => msg.remove());
+            }
+        }
+
+        // Initialize the authentication system
+        document.addEventListener('DOMContentLoaded', () => {
+            new AuthSystem();
+        });
+
+        // Add interactive background effect
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.body.style.background = `
+                radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+                #000
+            `;
+        });
+    </script>
+</body>
+</html>

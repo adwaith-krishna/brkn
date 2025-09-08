@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html data-wf-domain="www.brkn.com" data-wf-page="6749c353ea66c1921c71d945" data-wf-site="6749c352ea66c1921c71d8b8" lang="en">
+<head>
+<meta charset="utf-8">
+<title>BRKN</title>
+<meta content="BRKN SPECIALIZES IN COMMERCIAL PRINT/MOTION CAMPAIGNS AND CONTENT FOR MAJOR STUDIOS, GLOBAL BRANDS, AND WORLD CLASS AGENCIES FROM ACROSS THE GLOBE" name="description">
+<meta content="BRKN" property="og:title">
+<meta content="BRKN SPECIALIZES IN COMMERCIAL PRINT/MOTION CAMPAIGNS AND CONTENT FOR MAJOR STUDIOS, GLOBAL BRANDS, AND WORLD CLASS AGENCIES FROM ACROSS THE GLOBE" property="og:description">
+<meta content="BRKN" property="twitter:title">
+<meta content="BRKN SPECIALIZES IN COMMERCIAL PRINT/MOTION CAMPAIGNS AND CONTENT FOR MAJOR STUDIOS, GLOBAL BRANDS, AND WORLD CLASS AGENCIES FROM ACROSS THE GLOBE" property="twitter:description">
+<meta property="og:type" content="website">
+<meta content="summary_large_image" name="twitter:card">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+
+<style>
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* Loader Styles */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+#loader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.logo-container {
+    position: relative;
+    animation: logoEntrance 2s ease-out;
+}
+
+.logo-image {
+    width: 300px;
+    height: auto;
+    max-width: 90vw;
+    opacity: 0;
+    animation: fadeInLogo 1.5s ease-out 0.5s forwards;
+    object-fit: contain;
+}
+
+@keyframes logoEntrance {
+    0% {
+        transform: scale(0.3) rotate(-10deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1) rotate(2deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInLogo {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links a:hover {
+    opacity: 0.7;
+}
+
+/* Main Content */
+.main-content {
+    min-height: 100vh;
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.hero-title {
+    position: absolute;
+    top: 120px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.title-left {
+    text-align: left;
+}
+
+.title-right {
+    text-align: right;
+}
+
+/* Products Horizontal Scroller */
+.products-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 200px 0 100px;
+}
+
+.products-scroller {
+    width: 100%;
+    max-width: 1400px;
+    position: relative;
+}
+
+.product-slider {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 500px;
+    overflow: hidden;
+}
+
+.product-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.product-slide.prev {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.product-images {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 40px;
+}
+
+.product-image-left,
+.product-image-right {
+    flex: 1;
+    max-width: 300px;
+}
+
+.product-image-center {
+    flex: 2;
+    max-width: 500px;
+    position: relative;
+    z-index: 2;
+}
+
+.product-image-left img,
+.product-image-center img,
+.product-image-right img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.product-image-left {
+    transform: rotate(-5deg) translateY(20px);
+}
+
+.product-image-right {
+    transform: rotate(5deg) translateY(-20px);
+}
+
+.product-slide:hover .product-image-left img {
+    transform: scale(1.05);
+}
+
+.product-slide:hover .product-image-center img {
+    transform: scale(1.02);
+}
+
+.product-slide:hover .product-image-right img {
+    transform: scale(1.05);
+}
+
+/* Product Navigation */
+.product-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.product-pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.current-slide {
+    font-weight: 600;
+}
+
+.divider {
+    opacity: 0.5;
+}
+
+.product-slider {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 500px;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+}
+
+.product-slider:active {
+    cursor: grabbing;
+}
+
+.product-slider.dragging {
+    cursor: grabbing;
+}
+
+/* Subtle hint for interactivity */
+.product-slider::after {
+    content: 'Scroll or drag to navigate';
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 12px;
+    opacity: 0.4;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.product-slider:hover::after {
+    opacity: 0.7;
+}
+
+/* Product Names Scroller */
+.product-names-scroller {
+    position: absolute;
+    bottom: -80px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    overflow: hidden;
+}
+
+.product-names {
+    display: flex;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    align-items: center;
+}
+
+.product-name {
+    font-size: clamp(2rem, 6vw, 6rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    margin-right: 100px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.product-name.active {
+    opacity: 1;
+}
+
+.product-name:hover {
+    opacity: 0.7;
+}
+
+/* Loading State */
+.loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 18px;
+    opacity: 0.7;
+}
+
+.loading-state p {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Admin Access */
+.admin-access {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.admin-link {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 12px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.admin-link:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Product Info Styles */
+.product-info h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.product-description {
+    opacity: 0.8;
+    line-height: 1.6;
+    font-size: 14px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.empty-state h3 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.empty-state p {
+    margin-bottom: 20px;
+}
+
+.empty-state a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* About Section - Updated Layout */
+.about-section {
+    padding: 80px 40px;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.about-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #fff, #ccc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
+/* New Two-Column Layout */
+.about-main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+/* About Content - Left Side */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.about-text {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.9;
+}
+
+.about-text h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.about-text p {
+    margin-bottom: 20px;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px 15px;
+    text-align: center;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    background: linear-gradient(45deg, #fff, #ccc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Contact Section - Right Side */
+.contact-section {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+    height: fit-content;
+}
+
+.contact-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    background: linear-gradient(45deg, #fff, #ccc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.contact-icon {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.contact-text {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Responsive Updates */
+@media (max-width: 968px) {
+    .about-main-content {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+    
+    .about-content {
+        order: 1;
+    }
+    
+    .contact-section {
+        order: 2;
+    }
+    
+    .about-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-section {
+        padding: 60px 20px;
+    }
+    
+    .about-stats {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .contact-section {
+        padding: 30px 20px;
+    }
+    
+    .contact-info {
+        gap: 15px;
+    }
+    
+    .contact-item {
+        padding: 12px 20px;
+    }
+}
+
+/* Footer */
+.footer {
+    padding: 50px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
+
+/* Admin Access Responsive */
+@media (max-width: 768px) {
+    .admin-access {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .admin-link {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .nav-links {
+        gap: 20px;
+    }
+    
+    .main-content {
+        padding: 80px 20px;
+    }
+    
+    .hero-title {
+        position: static;
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        margin-bottom: 40px;
+        font-size: clamp(1.5rem, 6vw, 3rem);
+    }
+    
+    .products-section {
+        padding: 100px 0 50px;
+    }
+    
+    .product-images {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 20px;
+    }
+    
+    .product-image-left,
+    .product-image-right {
+        max-width: 250px;
+        transform: none;
+    }
+    
+    .product-image-center {
+        max-width: 300px;
+        order: -1;
+    }
+    
+    .product-slider {
+        height: 70vh;
+        min-height: 600px;
+    }
+    
+    .product-nav {
+        margin-top: 30px;
+    }
+    
+    .product-names-scroller {
+        bottom: -60px;
+    }
+    
+    .product-name {
+        font-size: clamp(1.5rem, 8vw, 3rem);
+        margin-right: 50px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .logo-image {
+        width: 250px;
+        max-width: 80vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .hero-title {
+        font-size: clamp(1.2rem, 5vw, 2rem);
+    }
+    
+    .product-images {
+        padding: 0 10px;
+    }
+    
+    .product-image-center {
+        max-width: 280px;
+    }
+    
+    .product-image-left,
+    .product-image-right {
+        max-width: 200px;
+    }
+    
+    .logo-image {
+        width: 200px;
+        max-width: 75vw;
+    }
+    
+    .product-slider::after {
+        content: 'Swipe to navigate';
+        bottom: 15px;
+        right: 15px;
+        font-size: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+    <!-- Loader with BRKN Logo -->
+    <div id="loader">
+        <div class="logo-container">
+            <img src="brkn logo.jpeg" alt="BRKN Logo" class="logo-image">
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="brand-logo">BRKN</a>
+        <nav class="nav-links">
+            <a href="#products">Products</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="register.html">Account</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="hero-title">
+            <span class="title-left">STRATEGIC THINKERS.<br>SMART STRATEGY.</span>
+            <span class="title-right">THOUGHTFUL EXECUTION.<br>BOLD BRANDS.</span>
+        </h1>
+        
+        <!-- Horizontal Product Scroller -->
+        <section class="products-section" id="products">
+            <div class="products-scroller">
+                <div class="product-slider" id="productSlider">
+                    <!-- Products will be dynamically loaded here -->
+                    <div class="loading-state">
+                        <p>Loading products...</p>
+                    </div>
+                </div>
+                
+                <!-- Product Navigation -->
+                <div class="product-nav">
+                    <div class="product-pagination">
+                        <span class="current-slide">01</span>
+                        <span class="divider">//</span>
+                        <span class="total-slides">00</span>
+                    </div>
+                </div>
+                
+                <!-- Admin Quick Access -->
+                <div class="admin-access">
+                    <a href="brkn_admin_panel.html" target="_blank" class="admin-link">Admin Panel</a>
+                </div>
+                
+                <!-- Product Names Scroller -->
+                <div class="product-names-scroller">
+                    <div class="product-names" id="productNames">
+                        <!-- Product names will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- About Section with New Layout -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-header">
+                <h2 class="about-title">ABOUT BRKN</h2>
+                <p class="about-subtitle">
+                    We break conventional boundaries to create extraordinary brand experiences that resonate globally.
+                </p>
+            </div>
+
+            <div class="about-main-content">
+                <!-- About Content - Left Side -->
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Our Story</h3>
+                        <p>
+                            Founded in 2019, BRKN emerged from a simple belief: the most powerful brands are those that dare to break from convention. We're a collective of strategic thinkers and creative visionaries who understand that being different isn't just an advantage—it's essential.
+                        </p>
+                        <p>
+                            From our Los Angeles headquarters, we've partnered with major studios, Fortune 500 companies, and world-class agencies to craft campaigns that command attention across print, motion, digital, and experiential mediums.
+                        </p>
+                    </div>
+
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">150+</div>
+                            <div class="stat-label">Global Campaigns</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Major Brands</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Industry Awards</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Years of Excellence</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Section - Right Side -->
+                <div class="contact-section" id="contact">
+                    <h3 class="contact-title">Get In Touch</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-icon">✉️</span>
+                            <span class="contact-text">hello@brkn.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span class="contact-text">Los Angeles, CA</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📱</span>
+                            <span class="contact-text">+1 (555) 123-4567</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🌐</span>
+                            <span class="contact-text">www.brkn.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>© 2024 BRKN. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#products">Products</a>
+                <a href="#contact">Contact</a>
+                <a href="#instagram">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loader Animation
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                loader.classList.add('fade-out');
+                
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 1000);
+            }, 3000); // Show logo for 3 seconds
+        });
+
+        // Product Data Management
+        const STORAGE_KEY = 'brkn_products';
+        let products = [];
+        let productSlider = null;
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+        });
+
+        // Load products from localStorage
+        async function loadProducts() {
+            try {
+                showLoadingState();
+                
+                // Load from localStorage
+                const storedData = localStorage.getItem(STORAGE_KEY);
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    const allProducts = parsed.products || [];
+                    products = allProducts.filter(p => p.status === 'active');
+                } else {
+                    // No data found, load sample data
+                    await loadSampleData();
+                }
+                
+                // Simulate loading delay for UX
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                if (products.length === 0) {
+                    showEmptyState();
+                } else {
+                    renderProducts();
+                    initializeProductSlider();
+                }
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showEmptyState();
+            }
+        }
+
+        // Load sample data if none exists
+        async function loadSampleData() {
+            const sampleProducts = [
+                {
+                    id: 1,
+                    name: "CONVERSE",
+                    description: "Classic streetwear collaboration featuring bold designs and premium materials.",
+                    status: "active",
+                    images: [
+                        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+                        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+                        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400"
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    name: "GUEST IN RESIDENCE",
+                    description: "Luxury lifestyle collection showcasing craftsmanship and contemporary design.",
+                    status: "active",
+                    images: [
+                        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400",
+                        "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600",
+                        "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400"
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 3,
+                    name: "GENESIS",
+                    description: "Automotive photography emphasizing innovation and future mobility.",
+                    status: "active",
+                    images: [
+                        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400",
+                        "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600",
+                        "https://images.unsplash.com/photo-1549399736-ccaa3198b603?w=400"
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 4,
+                    name: "LENNY KRAVITZ",
+                    description: "Rock legend portrait series capturing authentic artistic expression.",
+                    status: "active",
+                    images: [
+                        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
+                        "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600",
+                        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400"
+                    ],
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            // Save sample data to localStorage
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                products: sampleProducts,
+                lastUpdated: new Date().toISOString()
+            }));
+
+            products = sampleProducts;
+        }
+
+        function showLoadingState() {
+            const slider = document.getElementById('productSlider');
+            slider.innerHTML = `
+                <div class="loading-state">
+                    <p>Loading products...</p>
+                </div>
+            `;
+        }
+
+        // Render products in the slider
+        function renderProducts() {
+            const slider = document.getElementById('productSlider');
+            const namesContainer = document.getElementById('productNames');
+            
+            if (!products || products.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            // Generate product slides
+            const slidesHTML = products.map((product, index) => `
+                <div class="product-slide ${index === 0 ? 'active' : ''}" data-product-id="${product.id}">
+                    <div class="product-images">
+                        <div class="product-image-left">
+                            <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400'}" 
+                                 alt="${product.name} Product" 
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400'">
+                        </div>
+                        <div class="product-image-center">
+                            <img src="${product.images?.[1] || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600'}" 
+                                 alt="${product.name} Main" 
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600'">
+                        </div>
+                        <div class="product-image-right">
+                            <img src="${product.images?.[2] || 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400'}" 
+                                 alt="${product.name} Detail" 
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400'">
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            // Generate product names
+            const namesHTML = products.map((product, index) => `
+                <span class="product-name ${index === 0 ? 'active' : ''}" data-index="${index}">
+                    ${product.name}
+                </span>
+            `).join('');
+
+            slider.innerHTML = slidesHTML;
+            namesContainer.innerHTML = namesHTML;
+
+            // Update pagination
+            updatePagination();
+            showUpdateNotification('Products updated successfully!');
+        }
+
+        function showEmptyState() {
+            const slider = document.getElementById('productSlider');
+            const namesContainer = document.getElementById('productNames');
+            
+            slider.innerHTML = `
+                <div class="empty-state">
+                    <h3>No Products Found</h3>
+                    <p>No active products are currently available for display.</p>
+                    <a href="brkn_admin_panel.html" target="_blank">Manage Products in Admin Panel</a>
+                </div>
+            `;
+            
+            namesContainer.innerHTML = '';
+            document.querySelector('.total-slides').textContent = '00';
+        }
+
+        function updatePagination() {
+            const totalDisplay = products.length.toString().padStart(2, '0');
+            document.querySelector('.total-slides').textContent = totalDisplay;
+        }
+
+        function showUpdateNotification(message) {
+            // Only show notification if this isn't the initial load
+            if (document.querySelector('.product-slide')) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: rgba(255, 255, 255, 0.9);
+                    color: #000;
+                    padding: 12px 20px;
+                    border-radius: 6px;
+                    z-index: 10000;
+                    font-size: 14px;
+                    font-weight: 500;
+                    opacity: 0;
+                    transform: translateY(20px);
+                    transition: all 0.3s ease;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                    notification.style.transform = 'translateY(0)';
+                }, 10);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 2000);
+            }
+        }
+
+        // Product Slider Functionality
+        class ProductSlider {
+            constructor() {
+                if (products.length === 0) return;
+                
+                this.currentSlide = 0;
+                this.slides = document.querySelectorAll('.product-slide');
+                this.productNames = document.querySelectorAll('.product-name');
+                this.totalSlides = this.slides.length;
+                this.currentSlideEl = document.querySelector('.current-slide');
+                this.totalSlidesEl = document.querySelector('.total-slides');
+                this.productNamesContainer = document.getElementById('productNames');
+                this.slider = document.getElementById('productSlider');
+                
+                // Drag functionality
+                this.isDragging = false;
+                this.startX = 0;
+                this.currentX = 0;
+                this.dragThreshold = 50;
+                
+                // Scroll throttling
+                this.scrollTimeout = null;
+                this.lastScrollTime = 0;
+                this.scrollCooldown = 800;
+                
+                this.init();
+            }
+            
+            init() {
+                if (this.totalSlides === 0) return;
+                
+                // Set initial state
+                this.updateSlide();
+                this.updatePagination();
+                
+                // Add mouse wheel event listener
+                this.slider.addEventListener('wheel', (e) => this.handleWheel(e), { passive: false });
+                
+                // Add drag event listeners
+                this.slider.addEventListener('mousedown', (e) => this.handleDragStart(e));
+                this.slider.addEventListener('mousemove', (e) => this.handleDragMove(e));
+                this.slider.addEventListener('mouseup', (e) => this.handleDragEnd(e));
+                this.slider.addEventListener('mouseleave', (e) => this.handleDragEnd(e));
+                
+                // Add touch event listeners for mobile
+                this.slider.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
+                this.slider.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+                this.slider.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+                
+                // Add click handlers to product names
+                this.productNames.forEach((name, index) => {
+                    name.addEventListener('click', () => this.goToSlide(index));
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') this.prevSlide();
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                });
+                
+                // Prevent context menu on drag
+                this.slider.addEventListener('contextmenu', (e) => e.preventDefault());
+            }
+            
+            handleWheel(e) {
+                e.preventDefault();
+                
+                const currentTime = Date.now();
+                if (currentTime - this.lastScrollTime < this.scrollCooldown) {
+                    return;
+                }
+                
+                const deltaY = e.deltaY;
+                
+                if (deltaY > 0) {
+                    this.nextSlide();
+                } else if (deltaY < 0) {
+                    this.prevSlide();
+                }
+                
+                this.lastScrollTime = currentTime;
+            }
+            
+            handleDragStart(e) {
+                this.isDragging = true;
+                this.startX = e.clientX;
+                this.slider.classList.add('dragging');
+                e.preventDefault();
+            }
+            
+            handleDragMove(e) {
+                if (!this.isDragging) return;
+                
+                this.currentX = e.clientX;
+                const diffX = this.currentX - this.startX;
+                
+                const dragDistance = Math.min(Math.abs(diffX) / this.dragThreshold, 1);
+                const opacity = 1 - (dragDistance * 0.3);
+                this.slides[this.currentSlide].style.opacity = opacity;
+            }
+            
+            handleDragEnd(e) {
+                if (!this.isDragging) return;
+                
+                this.isDragging = false;
+                this.slider.classList.remove('dragging');
+                
+                const diffX = this.currentX - this.startX;
+                
+                this.slides[this.currentSlide].style.opacity = '';
+                
+                if (Math.abs(diffX) > this.dragThreshold) {
+                    if (diffX > 0) {
+                        this.prevSlide();
+                    } else {
+                        this.nextSlide();
+                    }
+                }
+                
+                this.startX = 0;
+                this.currentX = 0;
+            }
+            
+            handleTouchStart(e) {
+                this.isDragging = true;
+                this.startX = e.touches[0].clientX;
+                e.preventDefault();
+            }
+            
+            handleTouchMove(e) {
+                if (!this.isDragging) return;
+                this.currentX = e.touches[0].clientX;
+                e.preventDefault();
+            }
+            
+            handleTouchEnd(e) {
+                if (!this.isDragging) return;
+                
+                this.isDragging = false;
+                const diffX = this.currentX - this.startX;
+                
+                if (Math.abs(diffX) > this.dragThreshold) {
+                    if (diffX > 0) {
+                        this.prevSlide();
+                    } else {
+                        this.nextSlide();
+                    }
+                }
+                
+                this.startX = 0;
+                this.currentX = 0;
+            }
+            
+            nextSlide() {
+                this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+                this.updateSlide();
+            }
+            
+            prevSlide() {
+                this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+                this.updateSlide();
+            }
+            
+            goToSlide(index) {
+                this.currentSlide = index;
+                this.updateSlide();
+            }
+            
+            updateSlide() {
+                // Update slides
+                this.slides.forEach((slide, index) => {
+                    slide.classList.remove('active', 'prev');
+                    slide.style.opacity = '';
+                    
+                    if (index === this.currentSlide) {
+                        slide.classList.add('active');
+                    } else if (index < this.currentSlide) {
+                        slide.classList.add('prev');
+                    }
+                });
+                
+                // Update product names
+                this.productNames.forEach((name, index) => {
+                    name.classList.toggle('active', index === this.currentSlide);
+                });
+                
+                // Update names scroller position
+                const nameWidth = 300;
+                const offset = -this.currentSlide * nameWidth;
+                this.productNamesContainer.style.transform = `translateX(${offset}px)`;
+                
+                // Update pagination
+                this.updatePagination();
+            }
+            
+            updatePagination() {
+                const currentDisplay = (this.currentSlide + 1).toString().padStart(2, '0');
+                this.currentSlideEl.textContent = currentDisplay;
+            }
+
+            // Method to refresh the slider with new products
+            refresh() {
+                this.currentSlide = 0;
+                this.slides = document.querySelectorAll('.product-slide');
+                this.productNames = document.querySelectorAll('.product-name');
+                this.totalSlides = this.slides.length;
+                
+                if (this.totalSlides > 0) {
+                    // Re-add event listeners to new elements
+                    this.productNames.forEach((name, index) => {
+                        name.addEventListener('click', () => this.goToSlide(index));
+                    });
+                    
+                    this.updateSlide();
+                }
+            }
+        }
+
+        // Initialize slider after products are loaded
+        function initializeProductSlider() {
+            productSlider = new ProductSlider();
+        }
+
+        // Listen for storage changes from admin panel
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY || e.key === 'brkn_products_updated') {
+                console.log('Products updated from admin panel, refreshing...');
+                loadProducts().then(() => {
+                    if (productSlider && products.length > 0) {
+                        productSlider.refresh();
+                    }
+                });
+            }
+        });
+
+        // Also listen for same-window storage events (when admin is in same browser)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'brkn_products_updated') {
+                setTimeout(() => {
+                    loadProducts().then(() => {
+                        if (productSlider && products.length > 0) {
+                            productSlider.refresh();
+                        }
+                    });
+                }, 100);
+            }
+        });
+
+        // API functions for external integration
+        window.refreshProducts = function() {
+            loadProducts().then(() => {
+                if (productSlider && products.length > 0) {
+                    productSlider.refresh();
+                }
+            });
+        };
+
+        window.getProductsData = function() {
+            return products;
+        };
+
+        // Force refresh button (for development)
+        window.forceRefresh = function() {
+            console.log('Force refreshing products...');
+            window.refreshProducts();
+        };
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add some parallax effect on scroll
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            const heroTitle = document.querySelector('.hero-title');
+            
+            if (heroTitle) {
+                heroTitle.style.transform = `translateY(${scrollY * 0.3}px)`;
+            }
+        });
+    </script>
+</body>
+</html>

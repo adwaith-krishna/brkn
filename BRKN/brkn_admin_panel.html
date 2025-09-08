@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRKN Admin Panel - Product Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #111;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: #000;
+            padding: 20px 40px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .admin-nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .admin-section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #222;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        /* Product List */
+        .product-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .product-item {
+            background: #222;
+            border: 1px solid #333;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .product-preview {
+            width: 80px;
+            height: 60px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .product-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info h4 {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .product-info p {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #333;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #333;
+        }
+
+        .btn.primary {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn.primary:hover {
+            background: #ddd;
+        }
+
+        .btn.danger {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .btn.danger:hover {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            border: 1px solid #555;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        .image-upload-area {
+            border: 2px dashed #555;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .image-upload-area:hover {
+            border-color: #fff;
+        }
+
+        .image-upload-area.dragover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            background: #333;
+            border: 1px solid #555;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview-item .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: #222;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: #222;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* JSON Export/Import */
+        .json-area {
+            background: #333;
+            border: 1px solid #555;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 20px;
+            }
+            
+            .admin-header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .product-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-logo">BRKN ADMIN</div>
+        <nav class="admin-nav">
+            <a href="#products" class="nav-link active">Products</a>
+            <a href="#analytics" class="nav-link">Analytics</a>
+            <a href="#settings" class="nav-link">Settings</a>
+            <a href="brkn_website.html" target="_blank">View Site</a>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <!-- Stats Section -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">Overview</h2>
+            </div>
+            <div class="section-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalProducts">0</div>
+                        <div class="stat-label">Total Products</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeProducts">0</div>
+                        <div class="stat-label">Active Products</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalImages">0</div>
+                        <div class="stat-label">Total Images</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="lastUpdated">Never</div>
+                        <div class="stat-label">Last Updated</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Management -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">Products Management</h2>
+                <div>
+                    <button class="btn primary" onclick="openAddProductModal()">Add New Product</button>
+                    <button class="btn" onclick="exportProducts()">Export JSON</button>
+                    <button class="btn" onclick="openImportModal()">Import JSON</button>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="product-list" id="productList">
+                    <!-- Products will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+            </div>
+            <div class="section-content">
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn" onclick="reorderProducts()">Reorder Products</button>
+                    <button class="btn" onclick="previewSite()">Preview Site</button>
+                    <button class="btn danger" onclick="clearAllProducts()">Clear All Products</button>
+                    <button class="btn" onclick="loadSampleData()">Load Sample Data</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Product</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <div class="form-grid">
+                        <div>
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productDescription">Description</label>
+                                <textarea id="productDescription" name="description" rows="4"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="productStatus">Status</label>
+                                <select id="productStatus" name="status">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label>Product Images</label>
+                                <div class="image-upload-area" id="imageUploadArea">
+                                    <p>Drop images here or click to upload</p>
+                                    <p style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
+                                        Upload 3 images (left, center, right)
+                                    </p>
+                                </div>
+                                <div class="image-preview-grid" id="imagePreviewGrid">
+                                    <!-- Image previews will appear here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 30px; text-align: right;">
+                        <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn primary">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Import Products</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Paste JSON Data</label>
+                    <div class="json-area" id="importJsonArea" contenteditable="true">
+                        Paste your exported JSON data here...
+                    </div>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn primary" onclick="importProducts()">Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Persistent product storage using localStorage
+        const STORAGE_KEY = 'brkn_products';
+        let products = [];
+        let editingProductId = null;
+
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductsFromStorage();
+            if (products.length === 0) {
+                loadSampleData();
+            }
+            updateStats();
+            renderProducts();
+            setupImageUpload();
+        });
+
+        // Storage Management Functions
+        function saveProductsToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                products: products,
+                lastUpdated: new Date().toISOString()
+            }));
+            
+            // Notify main site of changes
+            broadcastProductUpdate();
+        }
+
+        function loadProductsFromStorage() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    products = parsed.products || [];
+                }
+            } catch (error) {
+                console.error('Error loading products from storage:', error);
+                products = [];
+            }
+        }
+
+        function broadcastProductUpdate() {
+            // Create a custom event to notify other windows
+            localStorage.setItem('brkn_products_updated', Date.now().toString());
+            
+            // Also trigger storage event manually for same window
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'brkn_products_updated',
+                newValue: Date.now().toString(),
+            }));
+        }
+
+        // Product Management Functions
+        function loadSampleData() {
+            products = [
+                {
+                    id: 1,
+                    name: "CONVERSE",
+                    description: "Classic streetwear collaboration featuring bold designs and premium materials.",
+                    status: "active",
+                    images: [
+                        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+                        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+                        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400"
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    name: "GUEST IN RESIDENCE",
+                    description: "Luxury lifestyle collection showcasing craftsmanship and contemporary design.",
+                    status: "active",
+                    images: [
+                        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400",
+                        "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600",
+                        "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400"
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 3,
+                    name: "GENESIS",
+                    description: "Automotive photography emphasizing innovation and future mobility.",
+                    status: "active",
+                    images: [
+                        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400",
+                        "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600",
+                        "https://images.unsplash.com/photo-1549399736-ccaa3198b603?w=400"
+                    ],
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            
+            saveProductsToStorage();
+            updateStats();
+            renderProducts();
+            showNotification('Sample data loaded successfully!');
+        }
+
+        function renderProducts() {
+            const productList = document.getElementById('productList');
+            
+            if (products.length === 0) {
+                productList.innerHTML = `
+                    <div style="text-align: center; padding: 40px; opacity: 0.7;">
+                        <p>No products found. Add your first product to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            productList.innerHTML = products.map(product => `
+                <div class="product-item" data-id="${product.id}">
+                    <div class="product-preview">
+                        ${product.images && product.images[1] ? 
+                            `<img src="${product.images[1]}" alt="${product.name}">` : 
+                            'No Image'
+                        }
+                    </div>
+                    <div class="product-info">
+                        <h4>${product.name} ${product.status !== 'active' ? '(Inactive)' : ''}</h4>
+                        <p>${product.description || 'No description'}</p>
+                        <p style="font-size: 12px; opacity: 0.5; margin-top: 5px;">
+                            ${product.images ? product.images.length : 0} images • 
+                            Created: ${new Date(product.createdAt).toLocaleDateString()}
+                        </p>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn" onclick="editProduct(${product.id})">Edit</button>
+                        <button class="btn" onclick="duplicateProduct(${product.id})">Duplicate</button>
+                        <button class="btn danger" onclick="deleteProduct(${product.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('activeProducts').textContent = products.filter(p => p.status === 'active').length;
+            document.getElementById('totalImages').textContent = products.reduce((sum, p) => sum + (p.images ? p.images.length : 0), 0);
+            document.getElementById('lastUpdated').textContent = products.length > 0 ? 'Just now' : 'Never';
+        }
+
+        // Modal Functions
+        function openAddProductModal() {
+            editingProductId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Product';
+            document.getElementById('productForm').reset();
+            document.getElementById('imagePreviewGrid').innerHTML = '';
+            document.getElementById('productModal').classList.add('show');
+        }
+
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            editingProductId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Product';
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productDescription').value = product.description || '';
+            document.getElementById('productStatus').value = product.status;
+            
+            // Load images
+            const imageGrid = document.getElementById('imagePreviewGrid');
+            imageGrid.innerHTML = '';
+            if (product.images) {
+                product.images.forEach((url, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'image-preview-item';
+                    item.innerHTML = `
+                        <img src="${url}" alt="Product image ${index + 1}">
+                        <button class="remove-image" onclick="removeImage(${index})">&times;</button>
+                    `;
+                    imageGrid.appendChild(item);
+                });
+            }
+            
+            document.getElementById('productModal').classList.add('show');
+        }
+
+        function deleteProduct(id) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== id);
+                saveProductsToStorage();
+                updateStats();
+                renderProducts();
+                showNotification('Product deleted successfully!');
+            }
+        }
+
+        function duplicateProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const newProduct = {
+                ...product,
+                id: Date.now(),
+                name: product.name + ' (Copy)',
+                createdAt: new Date().toISOString()
+            };
+
+            products.push(newProduct);
+            saveProductsToStorage();
+            updateStats();
+            renderProducts();
+            showNotification('Product duplicated successfully!');
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('show');
+            });
+        }
+
+        // Form Handling
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const imageGrid = document.getElementById('imagePreviewGrid');
+            const images = Array.from(imageGrid.querySelectorAll('img')).map(img => img.src);
+            
+            const productData = {
+                name: formData.get('name'),
+                description: formData.get('description'),
+                status: formData.get('status'),
+                images: images
+            };
+
+            if (editingProductId) {
+                // Edit existing product
+                const productIndex = products.findIndex(p => p.id === editingProductId);
+                if (productIndex !== -1) {
+                    products[productIndex] = {
+                        ...products[productIndex],
+                        ...productData,
+                        updatedAt: new Date().toISOString()
+                    };
+                    showNotification('Product updated successfully!');
+                }
+            } else {
+                // Add new product
+                const newProduct = {
+                    id: Date.now(),
+                    ...productData,
+                    createdAt: new Date().toISOString()
+                };
+                products.push(newProduct);
+                showNotification('Product added successfully!');
+            }
+
+            saveProductsToStorage();
+            updateStats();
+            renderProducts();
+            closeModal();
+        });
+
+        // Image Upload Handling
+        function setupImageUpload() {
+            const uploadArea = document.getElementById('imageUploadArea');
+            const imageGrid = document.getElementById('imagePreviewGrid');
+
+            uploadArea.addEventListener('click', () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = true;
+                input.accept = 'image/*';
+                input.onchange = handleFileSelect;
+                input.click();
+            });
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                handleFileSelect({ target: { files: e.dataTransfer.files } });
+            });
+        }
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            const imageGrid = document.getElementById('imagePreviewGrid');
+            
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const item = document.createElement('div');
+                        item.className = 'image-preview-item';
+                        item.innerHTML = `
+                            <img src="${e.target.result}" alt="Product image">
+                            <button class="remove-image" onclick="removeImageElement(this)">&times;</button>
+                        `;
+                        imageGrid.appendChild(item);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function removeImageElement(button) {
+            button.parentElement.remove();
+        }
+
+        // Export/Import Functions
+        function exportProducts() {
+            const data = {
+                products: products,
+                exportedAt: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `brkn-products-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Products exported successfully!');
+        }
+
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('show');
+        }
+
+        function importProducts() {
+            const jsonText = document.getElementById('importJsonArea').textContent.trim();
+            
+            try {
+                const data = JSON.parse(jsonText);
+                if (data.products && Array.isArray(data.products)) {
+                    products = data.products;
+                    saveProductsToStorage();
+                    updateStats();
+                    renderProducts();
+                    closeModal();
+                    showNotification('Products imported successfully!');
+                } else {
+                    throw new Error('Invalid JSON structure');
+                }
+            } catch (error) {
+                alert('Invalid JSON data. Please check the format and try again.');
+            }
+        }
+
+        // Utility Functions
+        function clearAllProducts() {
+            if (confirm('Are you sure you want to delete ALL products? This cannot be undone.')) {
+                products = [];
+                saveProductsToStorage();
+                updateStats();
+                renderProducts();
+                showNotification('All products cleared!');
+            }
+        }
+
+        function previewSite() {
+            window.open('brkn_website.html', '_blank');
+        }
+
+        function reorderProducts() {
+            // Simple reverse order for demo - could be enhanced with drag & drop
+            products.reverse();
+            saveProductsToStorage();
+            renderProducts();
+            showNotification('Products reordered!');
+        }
+
+        function showNotification(message, type = 'success') {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 4px;
+                z-index: 10000;
+                font-size: 14px;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS for notification animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Close modals on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+
+        // Export products data for main site integration
+        window.getProductsData = function() {
+            return products.filter(p => p.status === 'active');
+        };
+
+        // Listen for changes from main site (if needed)
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                loadProductsFromStorage();
+                updateStats();
+                renderProducts();
+                showNotification('Products synced from another tab!', 'info');
+            }
+        });
+    </script>
+</body>
+</html>

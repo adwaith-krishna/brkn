@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRKN - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .brand-logo {
+            width: 120px;
+            height: auto;
+            max-width: 100%;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            opacity: 1;
+        }
+
+        .brand-name {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #fff, #ccc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-tagline {
+            font-size: 14px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .phone-input-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .country-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 16px 12px;
+            color: #fff;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .phone-input,
+        .password-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 16px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .phone-input:focus,
+        .password-input:focus,
+        .country-select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .phone-input::placeholder,
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .login-button {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Loading State */
+        .loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #ff3b30;
+            text-align: center;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Show/Hide Password */
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .brand-name {
+                font-size: 28px;
+            }
+
+            .phone-input-container {
+                flex-direction: column;
+            }
+
+            .country-select {
+                width: 100%;
+            }
+
+            .brand-logo {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="brand-header">
+                <div class="logo-container">
+                    <img src="brkn logo.jpeg" alt="BRKN Logo" class="brand-logo">
+                </div>
+                <div class="brand-name">BRKN</div>
+                <div class="brand-tagline">Login</div>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <div class="phone-input-container">
+                        <select class="country-select" id="countryCode">
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+33">🇫🇷 +33</option>
+                            <option value="+49">🇩🇪 +49</option>
+                            <option value="+39">🇮🇹 +39</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+91">🇮🇳 +91</option>
+                            <option value="+86">🇨🇳 +86</option>
+                            <option value="+81">🇯🇵 +81</option>
+                            <option value="+82">🇰🇷 +82</option>
+                            <option value="+61">🇦🇺 +61</option>
+                            <option value="+55">🇧🇷 +55</option>
+                        </select>
+                        <input 
+                            type="tel" 
+                            class="phone-input" 
+                            id="phoneNumber"
+                            placeholder="Enter your phone number"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            class="password-input" 
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-button" id="loginBtn">
+                    Login
+                </button>
+
+                <div class="forgot-password">
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+            </form>
+
+            <div class="form-footer">
+                <a href="#" class="footer-link">Need help? Contact support</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SimpleLogin {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.setupPhoneInput();
+            }
+
+            bindEvents() {
+                // Form submission
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                // Password toggle
+                document.getElementById('passwordToggle').addEventListener('click', () => {
+                    this.togglePassword();
+                });
+
+                // Phone number formatting
+                document.getElementById('phoneNumber').addEventListener('input', (e) => {
+                    this.formatPhoneNumber(e.target);
+                });
+
+                // Enter key handling
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.handleLogin();
+                    }
+                });
+            }
+
+            setupPhoneInput() {
+                const phoneInput = document.getElementById('phoneNumber');
+                phoneInput.addEventListener('focus', () => {
+                    if (!phoneInput.value) {
+                        setTimeout(() => phoneInput.setSelectionRange(0, 0), 10);
+                    }
+                });
+            }
+
+            formatPhoneNumber(input) {
+                let value = input.value.replace(/\D/g, '');
+                const countryCode = document.getElementById('countryCode').value;
+                
+                // Basic formatting based on country
+                if (countryCode === '+1') {
+                    // US format: (555) 123-4567
+                    if (value.length >= 6) {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                    } else if (value.length >= 3) {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                    }
+                }
+                
+                input.value = value;
+            }
+
+            togglePassword() {
+                const passwordInput = document.getElementById('password');
+                const toggleButton = document.getElementById('passwordToggle');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleButton.textContent = 'Hide';
+                } else {
+                    passwordInput.type = 'password';
+                    toggleButton.textContent = 'Show';
+                }
+            }
+
+            async handleLogin() {
+                const countryCode = document.getElementById('countryCode').value;
+                const phoneNumber = document.getElementById('phoneNumber').value;
+                const password = document.getElementById('password').value;
+                const button = document.getElementById('loginBtn');
+
+                // Validation
+                if (!phoneNumber.trim()) {
+                    this.showError('Please enter your phone number');
+                    return;
+                }
+
+                if (!password.trim()) {
+                    this.showError('Please enter your password');
+                    return;
+                }
+
+                const fullPhoneNumber = countryCode + phoneNumber.replace(/\D/g, '');
+
+                // Show loading state
+                button.classList.add('loading');
+                button.disabled = true;
+
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // In real implementation, call your authentication API here
+                    console.log('Logging in with:', {
+                        phone: fullPhoneNumber,
+                        password: password
+                    });
+                    
+                    // For demo, accept any credentials
+                    this.handleLoginSuccess();
+                    
+                } catch (error) {
+                    this.showError('Invalid phone number or password. Please try again.');
+                } finally {
+                    button.classList.remove('loading');
+                    button.disabled = false;
+                }
+            }
+
+            handleLoginSuccess() {
+                // In real implementation, redirect to dashboard
+                console.log('Login successful! Redirecting...');
+                
+                // For demo, show success and redirect
+                this.showSuccess('Login successful!');
+                
+                setTimeout(() => {
+                    // Replace with actual dashboard URL
+                    window.location.href = '/dashboard';
+                }, 1500);
+            }
+
+            showError(message) {
+                this.removeMessages();
+                
+                const errorEl = document.createElement('div');
+                errorEl.className = 'error-message';
+                errorEl.textContent = message;
+                
+                const form = document.getElementById('loginForm');
+                form.insertBefore(errorEl, form.firstChild);
+                
+                // Remove error after 5 seconds
+                setTimeout(() => {
+                    if (errorEl.parentNode) {
+                        errorEl.remove();
+                    }
+                }, 5000);
+            }
+
+            showSuccess(message) {
+                this.removeMessages();
+                
+                const successEl = document.createElement('div');
+                successEl.className = 'success-message';
+                successEl.style.cssText = `
+                    background: rgba(52, 199, 89, 0.1);
+                    border: 1px solid rgba(52, 199, 89, 0.3);
+                    border-radius: 8px;
+                    padding: 12px 16px;
+                    margin-bottom: 20px;
+                    font-size: 14px;
+                    color: #34c759;
+                    text-align: center;
+                    animation: fadeInUp 0.3s ease-out;
+                `;
+                successEl.textContent = message;
+                
+                const form = document.getElementById('loginForm');
+                form.insertBefore(successEl, form.firstChild);
+            }
+
+            removeMessages() {
+                const existingMessages = document.querySelectorAll('.error-message, .success-message');
+                existingMessages.forEach(msg => msg.remove());
+            }
+        }
+
+        // Initialize the login system
+        document.addEventListener('DOMContentLoaded', () => {
+            new SimpleLogin();
+        });
+
+        // Add interactive background effect
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.body.style.background = `
+                radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+                #000
+            `;
+        });
+    </script>
+</body>
+</html>
